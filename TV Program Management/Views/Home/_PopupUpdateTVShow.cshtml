@@ -1,0 +1,83 @@
+﻿@using Domain.Models
+
+
+@model TVShow
+
+
+<div class="modal fade" id="updateModal_@Model.TVShowId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel_@Model.TVShowId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel_@Model.TVShowId">Enter New TV show information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-controller="TVShows" asp-action="UpdateTVShow" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label for="inputName_@Model.TVShowId">New Title<span style="color: red">*</span></label>
+                        <input type="text" class="form-control" id="inputName_@Model.TVShowId" name="Title" value="@Model.Title">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ReleassDate_@Model.TVShowId">New Release Date<span style="color: red">*</span></label>
+                        <input type="date" class="form-control" id="ReleassDate_@Model.TVShowId" name="ReleassDate" value="@Model.ReleassDate">
+                        <span asp-validation-for="ReleassDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Rating_@Model.TVShowId">New Rating<span style="color: red">*</span></label>
+                        <input type="number" class="form-control" id="Rating_@Model.TVShowId" name="Rating" step="0.1" min="0" max="10" value="@Model.Rating">
+                        <span asp-validation-for="Rating" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Url_@Model.TVShowId">New URL<span style="color: red">*</span></label>
+                        <input type="url" class="form-control" id="Url_@Model.TVShowId" name="URL" value="@Model.URL">
+                        <span asp-validation-for="URL" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="languageInput_@Model.TVShowId">New Languages<span style="color: red">*</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-row align-items-center">
+                        <div class="form-group col-md-2">
+                            <button type="button" id="addLanguageBtn_@Model.TVShowId" class="btn btn-primary">Add</button>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" id="languageInput_@Model.TVShowId" placeholder="Enter a new language" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <select id="languagesDropdown_@Model.TVShowId" class="form-control" name="Languages" asp-for="Languages" size="2">
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <option value="@language.Name">@language.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Languages" class="text-danger" id="languageError_@Model.TVShowId"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Select Image<span style="color: red">*</span></label>
+                        <input type="file" name="Image" class="form-control" id="image" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                        <button type="submit" class="btn btn-primary" id="btn_reset_@Model.TVShowId">Update</button>
+                        <input type="hidden" name="TVShowId" value="@Model.TVShowId" />
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

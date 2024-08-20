@@ -1,0 +1,67 @@
+﻿@using Infrastructure.DbContexts
+@using TV_Program_Management.Repo
+@using TV_Program_Management.Components
+
+@inject TVDbContext context
+
+@* عرض نافذه منبثقة عندما يكون هناك خطأ في اخال معلومات البرنامج التلفزيوني *@
+@if (TempData["ShowPopupErrorModel"] != null && (bool)TempData["ShowPopupErrorModel"])
+{
+    @await Html.PartialAsync("_ErrorAddTvShow")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var myModal = new bootstrap.Modal(document.getElementById("errorPopUpModel"));
+            myModal.show();
+        });
+    </script>
+}
+
+
+@* عرض نافذه منبثقة عندما يكون هناك خطأ في اخال الصورة *@
+@if (TempData["ShowPopupErrorImage"] != null && (bool)TempData["ShowPopupErrorImage"])
+{
+    @await Html.PartialAsync("_ErrorAddImage")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var myModal = new bootstrap.Modal(document.getElementById("errorPopUpImage"));
+            myModal.show();
+        });
+    </script>
+}
+
+
+@* عرض رسالة نجاح تسجيل الدخول *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["Success"]
+    </div>
+}
+
+
+@section btn_AddTvShow {
+    <button id="openPopupBtn_Add" class="btn btn-outline-light">+Add TV Show</button>
+}
+
+
+
+@await Component.InvokeAsync("TVShowList")
+
+
+@section footer{
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+</footer>
+}
+
+
+@await Html.PartialAsync("_PopupAddTvShow")
+
+
+@foreach (var tvShow in context.TVShows)
+{
+    @await Html.PartialAsync("_PopupUpdateTVShow", tvShow)
+}

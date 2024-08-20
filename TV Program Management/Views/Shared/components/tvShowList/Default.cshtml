@@ -1,0 +1,70 @@
+﻿@using Domain.Models
+
+@model TVShowComponentModel
+
+@if (Model == null || !Model.TVShows.Any())
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <h5 class="display-4 text-center">
+            No TV show available !!
+        </h5>
+    </div>
+}
+else
+{
+    <div class="container py-5">
+        <div class="row g-4">
+            @foreach (var tvShow in Model.TVShows)
+            {
+                @if(tvShow.IsDeleted != true)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-lg border-0 bg-light hover-card">
+                            <!-- TVShow image -->
+                            <img class="card-img-top img-fluid" src="~/uploads/@tvShow.Attachment.Name" alt="@tvShow.Title" style="object-fit: cover; height: 200px;" />
+                            <!-- TVShow details -->
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold mb-2 text-primary">@tvShow.Title</h5>
+                                <p class="card-text text-muted mb-1">
+                                    <i class="bi bi-calendar"></i> <span class="ms-2">@tvShow.ReleassDate.ToString("MMMM dd, yyyy")</span>
+                                </p>
+                                <p class="card-text text-warning mb-2">
+                                    <!-- Rating Bar -->
+                                    <div class="progress" style="height: 12px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: @(tvShow.Rating * 10)%" aria-valuenow="@tvShow.Rating" aria-valuemin="0" aria-valuemax="10">
+                                            @tvShow.Rating / 10
+                                        </div>
+                                    </div>
+                                </p>
+                                <div class="d-flex flex-wrap">
+                                    @foreach (var language in tvShow.Languages)
+                                    {
+                                        <span class="badge bg-secondary me-1 mb-1">@language.Name</span>
+                                    }
+                                </div>
+                            </div>
+                            <p class="card-text mb-3">
+                                <i class="bi bi-link"></i> <a href="@tvShow.URL" class="text-primary ms-2">@tvShow.URL</a>
+                            </p>
+
+                            <div class="card-footer text-center border-0 bg-light d-flex justify-content-between">
+                                <form asp-action="DeleteTVShow" asp-controller="TVShows">
+                                    <input type="hidden" name="TVShowId" value="@tvShow.TVShowId" />
+                                    <input type="hidden" name="Title" value="@tvShow.Title" />
+                                    <input type="hidden" name="ReleassDate" value="@tvShow.ReleassDate" />
+                                    <input type="hidden" name="Rating" value="@tvShow.Rating" />
+                                    <input type="hidden" name="URL" value="@tvShow.URL" />
+                                    <input type="hidden" name="Attachment" value="@tvShow.Attachment" />
+                                    <input type="hidden" name="Languages" value="@tvShow.Languages" />
+                                    <button type="submit" class="btn btn-outline-danger me-auto">Delete</button>
+                                </form>
+                                <a class="btn btn-outline-dark ms-auto" href="@tvShow.URL">View TV Show</a>
+                                <button id="updateBtn_@tvShow.TVShowId" class="btn btn-outline-primary mx-auto" data-bs-toggle="modal" data-bs-target="#updateModal_@tvShow.TVShowId">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
