@@ -4,6 +4,18 @@
 
 @inject TVDbContext context
 
+
+@* عرض رسالة في حال عدم توفر برامج تلفزيونية *@
+@if (context.TVShows == null || !context.TVShows.Any(tv => !tv.IsDeleted))
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <h5 class="display-4 text-center">
+            No TV show available !!
+        </h5>
+    </div>
+}
+
+
 @* عرض نافذه منبثقة عندما يكون هناك خطأ في اخال معلومات البرنامج التلفزيوني *@
 @if (TempData["ShowPopupErrorModel"] != null && (bool)TempData["ShowPopupErrorModel"])
 {
