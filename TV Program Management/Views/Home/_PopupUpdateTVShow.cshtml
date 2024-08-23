@@ -31,7 +31,7 @@
 
                     <div class="form-group">
                         <label for="Rating_@Model.TVShowId">New Rating<span style="color: red">*</span></label>
-                        <input type="number" class="form-control" id="Rating_@Model.TVShowId" name="Rating" step="0.1" min="0" max="10" value="@Model.Rating">
+                        <input type="number" class="form-control" id="Rating_@Model.TVShowId" name="Rating" step="0.1" min="0" max="10" value="@Model.Rating" placeholder="Rating must be between 0 and 10">
                         <span asp-validation-for="Rating" class="text-danger"></span>
                     </div>
 
